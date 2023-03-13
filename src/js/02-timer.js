@@ -27,22 +27,75 @@ import "flatpickr/dist/flatpickr.min.css";
 
 
 
-Вибір дати
-Метод onClose() з об'єкта параметрів викликається щоразу під час закриття елемента інтерфейсу, який створює flatpickr. Саме у ньому варто обробляти дату, обрану користувачем. Параметр selectedDates - це масив обраних дат, тому ми беремо перший елемент.
+======= Вибір дати =======
 
-Якщо користувач вибрав дату в минулому, покажи window.alert() з текстом "Please choose a date in the future".
-Якщо користувач вибрав валідну дату (в майбутньому), кнопка «Start» стає активною.
-Кнопка «Start» повинна бути неактивною доти, доки користувач не вибрав дату в майбутньому.
-Натисканням на кнопку «Start» починається відлік часу до обраної дати з моменту натискання.
-Відлік часу
-Натисканням на кнопку «Start» скрипт повинен обчислювати раз на секунду, скільки часу залишилось до вказаної дати, і оновлювати інтерфейс таймера, показуючи чотири цифри: дні, години, хвилини і секунди у форматі xx:xx:xx:xx.
+- Метод onClose() з об'єкта параметрів викликається щоразу під час закриття елемента інтерфейсу, який створює flatpickr. 
+* Саме у ньому варто обробляти дату, обрану користувачем. 
+- Параметр selectedDates - це масив обраних дат, тому ми беремо перший елемент.
 
-Кількість днів може складатися з більше, ніж двох цифр.
-Таймер повинен зупинятися, коли дійшов до кінцевої дати, тобто 00:00:00:00.
-НЕ БУДЕМО УСКЛАДНЮВАТИ
-Якщо таймер запущений, для того щоб вибрати нову дату і перезапустити його - необхідно перезавантажити сторінку.
+1 - Якщо користувач вибрав дату в минулому, покажи window.alert() з текстом "Please choose a date in the future".
+2 - Якщо користувач вибрав валідну дату (в майбутньому), кнопка «Start» стає активною.
+3 - Кнопка «Start» повинна бути неактивною доти, доки користувач не вибрав дату в майбутньому.
+4 - Натисканням на кнопку «Start» починається відлік часу до обраної дати з моменту натискання.
 
-Для підрахунку значень використовуй готову функцію convertMs, де ms - різниця між кінцевою і поточною датою в мілісекундах.
+======= Відлік часу =======
+
+- Натисканням на кнопку «Start» скрипт повинен обчислювати раз на секунду, скільки часу залишилось до вказаної дати, 
+і оновлювати інтерфейс таймера, показуючи чотири цифри: дні, години, хвилини і секунди у форматі xx:xx:xx:xx.
+
+- Кількість днів може складатися з більше, ніж двох цифр.
+- Таймер повинен зупинятися, коли дійшов до кінцевої дати, тобто 00:00:00:00.
+
+//НЕ БУДЕМО УСКЛАДНЮВАТИ
+Якщо таймер запущений, для того щоб вибрати нову дату і перезапустити його - необхідно перезавантажити сторінку.//
+
+
+ ---- Для підрахунку значень використовуй готову функцію convertMs, де ms - різниця між кінцевою і поточною датою в мілісекундах.
+
+console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
+console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
+console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
+
+Форматування часу
+
+Функція convertMs() повертає об'єкт з розрахованим часом, що залишився до кінцевої дати. 
+Зверни увагу, що вона не форматує результат. Тобто, якщо залишилося 4 хвилини або будь-якої іншої складової часу, 
+то функція поверне 4, а не 04. В інтерфейсі таймера необхідно додавати 0, якщо в числі менше двох символів. 
+
+1 - Напиши функцію addLeadingZero(value), яка використовує метод padStart() і перед рендерингом інтефрейсу форматує значення.
+
+Бібліотека повідомлень
+УВАГА
+Наступний функціонал не обов'язковий для здавання завдання, але буде хорошою додатковою практикою.
+
+Для відображення повідомлень користувачеві, замість window.alert(), використовуй бібліотеку notiflix (https://github.com/notiflix/Notiflix#readme).
+*/
+
+import flatpickr from 'flatpickr';
+import Notiflix from 'notiflix';
+import 'flatpickr/dist/flatpickr.min.css';
+require('flatpickr/dist/themes/material_blue.css');
+
+const refs = {
+  dateTimePicker: document.querySelector('#datetime-picker'),
+  starTimer: document.querySelector('[data-start]'),
+};
+
+// refs.starTimer.disabled = 'disabled'
+refs.starTimer.addEventListener('click', onClick);
+
+const options = {
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+  dateFormat: "    d M Y   H:i",
+  onClose(selectedDates) {
+    console.log(selectedDates[0]);
+  },
+};
+
+flatpickr(refs.dateTimePicker, options);
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -62,34 +115,18 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
-
-console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
-
-Форматування часу
-Функція convertMs() повертає об'єкт з розрахованим часом, що залишився до кінцевої дати. 
-Зверни увагу, що вона не форматує результат. Тобто, якщо залишилося 4 хвилини або будь-якої іншої складової часу, 
-то функція поверне 4, а не 04. В інтерфейсі таймера необхідно додавати 0, якщо в числі менше двох символів. 
-Напиши функцію addLeadingZero(value), яка використовує метод padStart() і перед рендерингом інтефрейсу форматує значення.
-
-Бібліотека повідомлень
-УВАГА
-Наступний функціонал не обов'язковий для здавання завдання, але буде хорошою додатковою практикою.
-
-Для відображення повідомлень користувачеві, замість window.alert(), використовуй бібліотеку notiflix (https://github.com/notiflix/Notiflix#readme).
-*/
-
-
-// import flatpickr from "flatpickr";
-// import "flatpickr/dist/flatpickr.min.css";
-
-const options = {
-  enableTime: true,
-  time_24hr: true,
-  defaultDate: new Date(),
-  minuteIncrement: 1,
-  onClose(selectedDates) {
-    console.log(selectedDates[0]);
-  },
-};
+function addLeadingZero(value) {
+  // padStart()
+}
+function onClick() {
+  // Notiflix.Report.success('Таймер Запущен', 'Спасибо за то что запустили таймер, Обратный отсчет пошел', 'OK')
+  Notiflix.Notify.failure('Please choose a date in the future', {
+    timeout: 1500,
+    width: '280px',
+    opacity: 1,
+    closeButton: true,
+    cssAnimationStyle: "from-top",
+  }
+  );
+document.querySelector('#NotiflixNotifyWrap').style.cssText = 'position: absolute; left: 400px; top:55px; width: 300px'
+}
