@@ -82,7 +82,7 @@ const refs = {
 };
 
 // refs.starTimer.disabled = 'disabled'
-refs.starTimer.addEventListener('click', onClick);
+// refs.starTimer.addEventListener('click', onClick);
 
 const options = {
   enableTime: true,
@@ -90,12 +90,50 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   dateFormat: "    d M Y   H:i",
-  onClose(selectedDates) {
-    console.log(selectedDates[0]);
+  altFormat: 'Y-m-d',
+  // onClose(selectedDates) {
+  //   // currentTimePick = selectedDates[0];
+  // },
+  locale: {
+    firstDayOfWeek: 1,
+    weekdays: {
+      shorthand: ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+      longhand: ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', "П'ятниця", 'Субота'],         
+    }, 
+    months: {
+      shorthand: ['Січ', 'Лют', 'Бер', 'Кві', 'Тра', 'Чер', 'Лип', 'Сер', 'Вер', 'Жов', 'Лист', 'Гру'],
+      longhand: ['Січеньь', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'],
+
+    },
   },
+
 };
 
-flatpickr(refs.dateTimePicker, options);
+const calendar = flatpickr(refs.dateTimePicker, options);
+let currentTimePick = ''
+
+refs.dateTimePicker.addEventListener('change', ()=>{
+  currentTimePick = calendar.selectedDates[0]
+  console.dir(currentTimePick)
+  
+
+  // console.dir(currentTimePick.toISOString())
+  // currentTimePick = calendar.selectedDates[0].toISOString()
+  // console.log('currentTimePick', currentTimePick)
+
+  //  const pickedTime= new Date(calendar.selectedDates[0].toISOString());
+
+  
+  // var result = pickedTime.getTime()/100000;
+  // console.log('result =>', result)
+  // console.log(convertMs(pickedTime));
+  // console.log('"2012-02-10T13:19:11+0000"')
+
+
+
+
+})
+
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -118,15 +156,18 @@ function convertMs(ms) {
 function addLeadingZero(value) {
   // padStart()
 }
-function onClick() {
-  // Notiflix.Report.success('Таймер Запущен', 'Спасибо за то что запустили таймер, Обратный отсчет пошел', 'OK')
-  Notiflix.Notify.failure('Please choose a date in the future', {
-    timeout: 1500,
-    width: '280px',
-    opacity: 1,
-    closeButton: true,
-    cssAnimationStyle: "from-top",
-  }
-  );
-document.querySelector('#NotiflixNotifyWrap').style.cssText = 'position: absolute; left: 400px; top:55px; width: 300px'
-}
+
+
+// function onClick() {
+//   // Notiflix.Report.success('Таймер Запущен', 'Спасибо за то что запустили таймер, Обратный отсчет пошел', 'OK')
+//   Notiflix.Notify.failure('Please choose a date in the future', {
+//     timeout: 1500,
+//     width: '280px',
+//     opacity: 1,
+//     closeButton: true,
+//     cssAnimationStyle: "from-top",
+//   }
+//   );
+// document.querySelector('#NotiflixNotifyWrap').style.cssText = 'position: absolute; left: 400px; top:55px; width: 300px'
+// }
+
