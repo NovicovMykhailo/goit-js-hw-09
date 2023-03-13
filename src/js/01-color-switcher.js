@@ -38,13 +38,13 @@ function onStart() {
   timerId = setInterval(() => {
     document.body.style.backgroundColor = getRandomHexColor();
   }, 1000);
-}
+} 
 
 function onStop() {
-  if (refs.startBtn.disabled === true) {
-    refs.stopBtn.disabled = 'disabled';
-  }
+  // if (refs.startBtn.disabled === true) {
+  //   refs.stopBtn.disabled = 'disabled';
+  // }
   refs.startBtn.disabled = '';
-
   clearInterval(timerId);
+  // document.body.style.backgroundColor = '#fff'
 }
