@@ -76,64 +76,108 @@ import Notiflix from 'notiflix';
 import 'flatpickr/dist/flatpickr.min.css';
 require('flatpickr/dist/themes/material_blue.css');
 
-const refs = {
-  dateTimePicker: document.querySelector('#datetime-picker'),
-  starTimer: document.querySelector('[data-start]'),
-};
-
-// refs.starTimer.disabled = 'disabled'
-// refs.starTimer.addEventListener('click', onClick);
-
 const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
+  // defaultDate: "today",
   minuteIncrement: 1,
-  dateFormat: "    d M Y   H:i",
+  dateFormat: '    d M Y   H:i',
   altFormat: 'Y-m-d',
   // onClose(selectedDates) {
-  //   // currentTimePick = selectedDates[0];
+  // //   // currentTimePick = selectedDates[0];
+
   // },
   locale: {
     firstDayOfWeek: 1,
     weekdays: {
       shorthand: ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-      longhand: ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', "П'ятниця", 'Субота'],         
-    }, 
+      longhand: [
+        'Неділя',
+        'Понеділок',
+        'Вівторок',
+        'Середа',
+        'Четвер',
+        "П'ятниця",
+        'Субота',
+      ],
+    },
     months: {
-      shorthand: ['Січ', 'Лют', 'Бер', 'Кві', 'Тра', 'Чер', 'Лип', 'Сер', 'Вер', 'Жов', 'Лист', 'Гру'],
-      longhand: ['Січеньь', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'],
-
+      shorthand: [
+        'Січ',
+        'Лют',
+        'Бер',
+        'Кві',
+        'Тра',
+        'Чер',
+        'Лип',
+        'Сер',
+        'Вер',
+        'Жов',
+        'Лист',
+        'Гру',
+      ],
+      longhand: [
+        'Січеньь',
+        'Лютий',
+        'Березень',
+        'Квітень',
+        'Травень',
+        'Червень',
+        'Липень',
+        'Серпень',
+        'Вересень',
+        'Жовтень',
+        'Листопад',
+        'Грудень',
+      ],
     },
   },
-
 };
 
+const refs = {
+  dateTimePicker: document.querySelector('#datetime-picker'),
+  timer: document.querySelector('.timer'),
+  starTimer: document.querySelector('[data-start]'),
+};
+
+// refs.starTimer.disabled = 'disabled'
+// refs.starTimer.enabled = ''
+
 const calendar = flatpickr(refs.dateTimePicker, options);
-let currentTimePick = ''
 
-refs.dateTimePicker.addEventListener('change', ()=>{
-  currentTimePick = calendar.selectedDates[0]
-  console.dir(currentTimePick)
-  
+refs.starTimer.addEventListener('click', onClick);
 
-  // console.dir(currentTimePick.toISOString())
-  // currentTimePick = calendar.selectedDates[0].toISOString()
-  // console.log('currentTimePick', currentTimePick)
+function onClick() {
+  const pickedTime = new Date(calendar.selectedDates[0]).getTime();
 
-  //  const pickedTime= new Date(calendar.selectedDates[0].toISOString());
+  var x = setInterval(() => {
+    let timeNow = new Date().getTime();
+    let countDown = pickedTime - timeNow;
+    let result = convertMs(countDown);
+    // if (countDown <= 0) {
+    //   Notiflix.Notify.failure('Please choose a date in the future', {
+    //     timeout: 1500,
+    //     width: '280px',
+    //     opacity: 1,
+    //     closeButton: true,
+    //     cssAnimationStyle: 'from-top',
+    //   });
+    //   document.querySelector('#NotiflixNotifyWrap').style.cssText =
+    //     'position: absolute; left: 400px; top:55px; width: 300px';
+    //     refs.starTimer.disabled = 'disabled'
+    //     clearInterval(x)
+    //   return;
+    // }else{
+    // refs.starTimer.disabled = '';
+    // refs.starTimer.enebled = 'enabled';
 
-  
-  // var result = pickedTime.getTime()/100000;
-  // console.log('result =>', result)
-  // console.log(convertMs(pickedTime));
-  // console.log('"2012-02-10T13:19:11+0000"')
-
-
-
-
-})
-
+    // console.log('onClick -> result', result);
+    return addLeadingZero(result)
+  // }
+  ;
+  }, 1000);
+}
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -154,20 +198,43 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 }
 function addLeadingZero(value) {
+  value.map((e)=>{console.log(e.target.value)})
+  // console.log({ days, hours, minutes, seconds })
   // padStart()
 }
 
-
 // function onClick() {
 //   // Notiflix.Report.success('Таймер Запущен', 'Спасибо за то что запустили таймер, Обратный отсчет пошел', 'OK')
-//   Notiflix.Notify.failure('Please choose a date in the future', {
-//     timeout: 1500,
-//     width: '280px',
-//     opacity: 1,
-//     closeButton: true,
-//     cssAnimationStyle: "from-top",
-//   }
-//   );
-// document.querySelector('#NotiflixNotifyWrap').style.cssText = 'position: absolute; left: 400px; top:55px; width: 300px'
-// }
 
+
+
+/**
+
+
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  => // Get today's date and time
+  var now = new Date().getTime();
+    
+  => // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+    
+ =>  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // Output the result in an element with id="demo"
+  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+ */
