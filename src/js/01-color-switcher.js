@@ -1,20 +1,13 @@
 /*Завдання 1 - перемикач кольорів
-Виконуй це завдання у файлах 01-color-switcher.html і 01-color-switcher.js. Подивися демо-відео роботи перемикача.
 
-HTML містить кнопки «Start» і «Stop».
+1   Напиши скрипт, який після натискання кнопки «Start», раз на секунду змінює колір фону <body> на випадкове значення, 
+    використовуючи інлайн стиль. Для генерування випадкового кольору використовуй функцію getRandomHexColor.
 
-<button type="button" data-start>Start</button>
-<button type="button" data-stop>Stop</button>
-
-Напиши скрипт, який після натискання кнопки «Start», раз на секунду змінює колір фону <body> на випадкове значення, 
-використовуючи інлайн стиль.
-Натисканням на кнопку «Stop» зміна кольору фону повинна зупинятися.
+2   Натисканням на кнопку «Stop» зміна кольору фону повинна зупинятися.
 
 УВАГА
 Враховуй, що на кнопку «Start» можна натиснути нескінченну кількість разів. 
 Зроби так, щоб доки зміна теми запущена, кнопка «Start» була неактивною (disabled).
-
-Для генерування випадкового кольору використовуй функцію getRandomHexColor.
 
 */
 
@@ -41,10 +34,6 @@ function onStart() {
 } 
 
 function onStop() {
-  // if (refs.startBtn.disabled === true) {
-  //   refs.stopBtn.disabled = 'disabled';
-  // }
   refs.startBtn.disabled = '';
   clearInterval(timerId);
-  // document.body.style.backgroundColor = '#fff'
 }

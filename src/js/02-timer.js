@@ -1,39 +1,19 @@
 /** 
  * Завдання 2 - таймер зворотного відліку
-Виконуй це завдання у файлах 02-timer.html і 02-timer.js. Напиши скрипт таймера, який здійснює зворотний відлік до певної дати. Такий таймер може використовуватися у блогах та інтернет-магазинах, сторінках реєстрації подій, під час технічного обслуговування тощо. Подивися демо-відео роботи таймера.
 
-Елементи інтерфейсу
-HTML містить готову розмітку таймера, поля вибору кінцевої дати і кнопку, по кліку на яку, таймер повинен запускатися. Додай мінімальне оформлення елементів інтерфейсу.
+ Напиши скрипт таймера, який здійснює зворотний відлік до певної дати, 
+ який може використовуватися у блогах та інтернет-магазинах, сторінках реєстрації подій, під час технічного обслуговування тощо. 
 
-<input type="text" id="datetime-picker" />
-<button type="button" data-start>Start</button>
 
-<div class="timer">
-  <div class="field">
-    <span class="value" data-days>00</span>
-    <span class="label">Days</span>
-  </div>
-  <div class="field">
-    <span class="value" data-hours>00</span>
-    <span class="label">Hours</span>
-  </div>
-  <div class="field">
-    <span class="value" data-minutes>00</span>
-    <span class="label">Minutes</span>
-  </div>
-  <div class="field">
-    <span class="value" data-seconds>00</span>
-    <span class="label">Seconds</span>
-  </div>
-</div>
 
 Бібліотека flatpickr(https://flatpickr.js.org/)
+
 Використовуй бібліотеку flatpickr для того, 
 щоб дозволити користувачеві кросбраузерно вибрати кінцеву дату і час в одному елементі інтерфейсу.
  Для того щоб підключити CSS код бібліотеки в проект, необхідно додати ще один імпорт, крім того, що описаний в документації.
 
 // Описаний в документації
-import flatpickr from "flatpickr";
+;
 // Додатковий імпорт стилів
 import "flatpickr/dist/flatpickr.min.css";
 
@@ -45,15 +25,7 @@ import "flatpickr/dist/flatpickr.min.css";
 Ми підготували для тебе об'єкт, який потрібен для виконання завдання. 
 Розберися, за що відповідає кожна властивість в документації «Options» (https://flatpickr.js.org/options/), і використовуй його у своєму коді.
 
-const options = {
-  enableTime: true,
-  time_24hr: true,
-  defaultDate: new Date(),
-  minuteIncrement: 1,
-  onClose(selectedDates) {
-    console.log(selectedDates[0]);
-  },
-};
+
 
 Вибір дати
 Метод onClose() з об'єкта параметрів викликається щоразу під час закриття елемента інтерфейсу, який створює flatpickr. Саме у ньому варто обробляти дату, обрану користувачем. Параметр selectedDates - це масив обраних дат, тому ми беремо перший елемент.
@@ -107,3 +79,17 @@ console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20
 
 Для відображення повідомлень користувачеві, замість window.alert(), використовуй бібліотеку notiflix (https://github.com/notiflix/Notiflix#readme).
 */
+
+
+// import flatpickr from "flatpickr";
+// import "flatpickr/dist/flatpickr.min.css";
+
+const options = {
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+  onClose(selectedDates) {
+    console.log(selectedDates[0]);
+  },
+};
