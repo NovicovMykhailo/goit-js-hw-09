@@ -93,6 +93,7 @@ input:focus {
   outline: 1px solid #ccc;
   padding: 40px;
   border-radius: 10px;
+  box-shadow: 0 0px 6px #a6afc3b3;
 }
 .form > label {
   display: flex;
