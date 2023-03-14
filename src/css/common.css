@@ -128,5 +128,19 @@ input:focus {
   left: 47px !important;
 }
 
+.notiflix-confirm-overlay.nx-with-animation{
+  background-color: transparent !important;
+}
 
-
+.notiflix-confirm-content{
+  box-shadow: 0 0 6px #a6afc3b3 !important;
+  position: absolute !important;
+  top: 48px !important;
+  left: 403px !important;
+}
+#NXConfirmButtonOk {
+  background: rgb(38, 192, 211) !important;
+}
+.notiflix-confirm-head>h5{
+  color: rgb(38, 192, 211) !important
+}
