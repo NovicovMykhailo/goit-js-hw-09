@@ -70,8 +70,8 @@ refs.starTimer.enabled = ''; // remove Enable atr
 
 const calendar = flatpickr(refs.dateTimePicker, options); // FlatPicker Init
 
-refs.dateTimePicker.addEventListener('change', onChange);
-refs.starTimer.addEventListener('click', onClick);
+refs.dateTimePicker.addEventListener('change', onChange);// date field change (4 notification validation)
+refs.starTimer.addEventListener('click', onClick);// Start timer button
 
 function onChange() {
   const pickedTime = new Date(calendar.selectedDates[0]).getTime();
