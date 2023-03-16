@@ -12,6 +12,8 @@ let intervalId = null;
 let finalDelay = 0;
 let promiceResult;
 
+
+
 refs.form.addEventListener('submit', onSubmit);
 
 function onSubmit(e) {
