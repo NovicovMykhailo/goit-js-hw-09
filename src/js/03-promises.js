@@ -1,62 +1,65 @@
-/*
-*Завдання 3 - генератор промісів
-Виконуй це завдання у файлах 03-promises.html і 03-promises.js. Подивися демо-відео роботи генератора промісів.
+import Notiflix from 'notiflix';
 
-HTML містить розмітку форми, в поля якої користувач буде вводити першу затримку в мілісекундах, 
-крок збільшення затримки для кожного промісу після першого і кількість промісів, яку необхідно створити.
 
-<form class="form">
-  <label>
-    First delay (ms)
-    <input type="number" name="delay" required />
-  </label>
-  <label>
-    Delay step (ms)
-    <input type="number" name="step" required />
-  </label>
-  <label>
-    Amount
-    <input type="number" name="amount" required />
-  </label>
-  <button type="submit">Create promises</button>
-</form>
+const refs = {
+  delay: document.querySelector('[name="delay"]'),
+  step: document.querySelector('[name="step"]'),
+  amount: document.querySelector('[name="amount"]'),
+  form: document.querySelector('.form'),
+};
+let counter = 1;
+let intervalId = null;
 
-Напиши скрипт, який на момент сабміту форми викликає функцію createPromise(position, delay) стільки разів, скільки ввели в поле amount. Під час кожного виклику передай їй номер промісу (position), що створюється, і затримку, враховуючи першу затримку (delay), введену користувачем, і крок (step).
+refs.form.addEventListener('submit', onSubmit);
 
-function createPromise(position, delay) {
-  const shouldResolve = Math.random() > 0.3;
-  if (shouldResolve) {
-    // Fulfill
-  } else {
-    // Reject
-  }
+
+function onSubmit(e) {
+  e.preventDefault();
+  intervalId = setInterval(intervalFn, refs.step.value);
 }
 
-Доповни код функції createPromise таким чином, щоб вона повертала один проміс, 
-який виконується або відхиляється через delay часу. 
-Значенням промісу повинен бути об'єкт, в якому будуть властивості position і delay зі значеннями однойменних параметрів.
-Використовуй початковий код функції для вибору того, що потрібно зробити з промісом - виконати або відхилити.
-
-createPromise(2, 1500)
-  .then(({ position, delay }) => {
-    console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
-  })
-  .catch(({ position, delay }) => {
-    console.log(`❌ Rejected promise ${position} in ${delay}ms`);
-  });
-
-Бібліотека повідомлень
-УВАГА
-Наступний функціонал не обов'язковий для здавання завдання, але буде хорошою додатковою практикою.
-
-Для відображення повідомлень користувачеві, замість console.log(), використовуй бібліотеку notiflix (https://github.com/notiflix/Notiflix#readme).
- */
+function intervalFn() {
+  if (counter === Number(refs.amount.value) + 1) {
+    clearInterval(intervalId);
+    counter = 1;
+    refs.amount.value =''
+    refs.delay.value = ''
+    refs.step.value = ''
+    return;
+  }
+  createPromise(counter, refs.delay.value);
+}
 
 function createPromise(position, delay) {
-  const shouldResolve = Math.random() > 0.3;
-  if (shouldResolve) {
-    // Fulfill
-  } else {
-    // Reject
-  }
+  new Promise((resolve, reject) => {
+    {
+      const shouldResolve = Math.random() > 0.3;
+      setTimeout(() => {
+        if (shouldResolve) {
+          resolve; // Fulfill
+         
+          Notiflix.Notify.success(
+            `✅ Fulfilled promise ${position} in ${delay}ms`,
+            {
+              timeout: 10000,
+              width: '280px',
+              opacity: 1,
+              cssAnimationStyle: 'from-top',
+            }
+          );
+        } else {
+          reject; // Reject
+          Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`, {
+            timeout: 10000,
+            width: '280px',
+            opacity: 1,
+            cssAnimationStyle: 'from-top',
+          });
+          
+        }
+      }, delay);
+    }
+  });
+
+  counter += 1;
 }
