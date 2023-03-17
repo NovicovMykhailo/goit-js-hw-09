@@ -12,8 +12,6 @@ let intervalId = null;
 let finalDelay = 0;
 let promiceResult;
 
-
-
 refs.form.addEventListener('submit', onSubmit);
 
 function onSubmit(e) {
@@ -35,51 +33,46 @@ function intervalFn() {
     counter = 1;
     return;
   }
-  createPromise(counter, refs.delay.value);
+  createPromise(counter, refs.delay.value)
+    .then(({ position, delay }) => {
+      Notiflix.Notify.success(
+        `✅ Fulfilled promise ${position} in ${finalDelay}ms`,
+        {
+          timeout: 10000,
+          width: '280px',
+          opacity: 1,
+          cssAnimationStyle: 'from-top',
+        }
+      );
+      finalDelay += Number(refs.step.value);
+    })
+    .catch(({ position, delay}) => {
+      Notiflix.Notify.failure(
+        `❌ Rejected promise ${position} in ${finalDelay}ms`,
+        {
+          timeout: 10000,
+          width: '280px',
+          opacity: 1,
+          cssAnimationStyle: 'from-top',
+        }
+      );
+      finalDelay += Number(refs.step.value);
+    });
   refs.form.addEventListener('click', onInput);
 }
 
 function createPromise(position, delay) {
-  let promise = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     {
       const shouldResolve = Math.random() > 0.3;
       setTimeout(() => {
+        counter += 1;
         if (shouldResolve) {
-          resolve; // Fulfill
-
-          Notiflix.Notify.success(
-            `✅ Fulfilled promise ${position} in ${finalDelay}ms`,
-            {
-              timeout: 10000,
-              width: '280px',
-              opacity: 1,
-              cssAnimationStyle: 'from-top',
-            }
-          );
-           { position, finalDelay }
-          finalDelay += Number(refs.step.value);
-
+          resolve({ position, delay }); // Fulfill
         } else {
-          reject; // Reject
-
-          Notiflix.Notify.failure(
-            `❌ Rejected promise ${position} in ${finalDelay}ms`,
-            {
-              timeout: 10000,
-              width: '280px',
-              opacity: 1,
-              cssAnimationStyle: 'from-top',
-            }
-          );
-          { position, finalDelay }
-          finalDelay += Number(refs.step.value);
-
+          reject({ position, delay }); // Reject
         }
       }, delay);
     }
-  })
-
-  counter += 1;
+  });
 }
-
-
